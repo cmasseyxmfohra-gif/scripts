@@ -85,7 +85,7 @@ local Body = New("Frame", {Parent = Card, BackgroundTransparency = 1, Size = UDi
 })
 
 local Header = New("Frame", {Parent = Body, LayoutOrder = 1, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 22)})
-local TitleRow = New("Frame", {Parent = Header, BackgroundTransparency = 1, Size = UDim2.new(1, -28, 1, 0)}, {
+local TitleRow = New("Frame", {Parent = Header, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 1, 0)}, {
     New("UIListLayout", {FillDirection = Enum.FillDirection.Horizontal, VerticalAlignment = Enum.VerticalAlignment.Center, Padding = UDim.new(0, 8)}),
 })
 New("TextLabel", {Parent = TitleRow, BackgroundTransparency = 1, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.new(0, 0, 1, 0),
@@ -94,8 +94,6 @@ New("TextLabel", {Parent = TitleRow, BackgroundColor3 = Theme.SecondAccent, Back
     FontFace = F(Enum.FontWeight.Bold), Text = Popup.Tag, TextColor3 = Theme.Text, TextSize = 11}, {
     Corner(4), New("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6)}),
 })
-local Close = New("TextButton", {Parent = Header, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, 0, 0.5, 0), Size = UDim2.fromOffset(22, 22),
-    BackgroundTransparency = 1, FontFace = F(Enum.FontWeight.Medium), Text = "Ã—", TextColor3 = Theme.Dim, TextSize = 22, AutoButtonColor = false})
 
 local MsgBox = New("Frame", {Parent = Body, LayoutOrder = 2, BackgroundColor3 = Theme.Section, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y}, {
     Corner(6), Stroke(Theme.Inline, 1),
@@ -127,8 +125,6 @@ end
 
 Btn.MouseEnter:Connect(function() Tween(Btn, 0.15, {BackgroundColor3 = Theme.Accent:Lerp(Color3.new(1, 1, 1), 0.15)}) end)
 Btn.MouseLeave:Connect(function() Tween(Btn, 0.15, {BackgroundColor3 = Theme.Accent}) end)
-Close.MouseEnter:Connect(function() Tween(Close, 0.15, {TextColor3 = Theme.Text}) end)
-Close.MouseLeave:Connect(function() Tween(Close, 0.15, {TextColor3 = Theme.Dim}) end)
 
 do
     local Dragging, Start, StartPos
@@ -170,11 +166,6 @@ Btn.MouseButton1Click:Connect(function()
     end)
 end)
 
-Close.MouseButton1Click:Connect(function()
-    if Closing then return end
-    Closing = true
-    Dismiss()
-end)
 
 Gui.Parent = GuiParent
 task.defer(FitToScreen)
