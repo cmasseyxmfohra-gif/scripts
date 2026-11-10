@@ -1,22 +1,11 @@
 local Popup = {
-    Title = "practical basketball",
+    Title = "tha bronx",
     Tag = "BETA",
-    Message = "Before u run this script it might take a sec to load, so dont complain abt that. this is a beta, so expect some issues.\n\n"
-        .. "<b>auto green:</b> auto green isnt 100% accuracte yet but im working on that for rn its stable i would say .\n\n"
-        .. "please give me suggestion in the discord",
-    Button = "got it",
+    Heading = "Before you run this script",
+    Message = "If you're on mobile or a low UNC executor, the script can take up to 2 minutes to load because of the heavy obfuscation.\n\nIf you don't like this UI, there will be an option to go back to the old UI in about a week, so please don't complain to me about the UI.\n\nPlease report any bugs or issues to me ASAP and I'll fix them as soon as I'm told.",
+    Agree = "I've read this",
+    Button = "Understood / Load script",
 }
-
-local ExecName = "Unknown"
-pcall(function()
-    if identifyexecutor then
-        local Name, Version = identifyexecutor()
-        ExecName = tostring(Name or "Unknown") .. (Version and (" " .. tostring(Version)) or "")
-    end
-end)
-local Lower = string.lower(ExecName)
-local Limited = Lower:find("solara") ~= nil or Lower:find("xeno") ~= nil
-    or type(getgc) ~= "function" or type(hookmetamethod) ~= "function"
 
 local Theme = {
     Background = Color3.fromRGB(27, 29, 30),
@@ -27,8 +16,6 @@ local Theme = {
     Dim = Color3.fromRGB(150, 155, 168),
     Accent = Color3.fromRGB(98, 174, 255),
     SecondAccent = Color3.fromRGB(61, 100, 141),
-    Good = Color3.fromRGB(90, 210, 140),
-    Warn = Color3.fromRGB(255, 176, 72),
 }
 
 local FontId = "rbxassetid://12187365364"
@@ -101,23 +88,33 @@ local MsgBox = New("Frame", {Parent = Body, LayoutOrder = 2, BackgroundColor3 = 
     Corner(6), Stroke(Theme.Inline, 1),
     New("UIPadding", {PaddingTop = UDim.new(0, 12), PaddingBottom = UDim.new(0, 12), PaddingLeft = UDim.new(0, 12), PaddingRight = UDim.new(0, 12)}),
 })
-New("TextLabel", {Parent = MsgBox, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y,
-    FontFace = F(Enum.FontWeight.Regular), RichText = true, Text = Popup.Message, TextColor3 = Theme.Text, TextSize = 14,
+New("UIListLayout", {Parent = MsgBox, Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder})
+New("TextLabel", {Parent = MsgBox, LayoutOrder = 1, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y,
+    FontFace = F(Enum.FontWeight.Heavy), Text = Popup.Heading, TextColor3 = Theme.Text, TextSize = 17,
+    TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left})
+New("TextLabel", {Parent = MsgBox, LayoutOrder = 2, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y,
+    FontFace = F(Enum.FontWeight.Regular), Text = Popup.Message, TextColor3 = Theme.Text, TextSize = 14,
     TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, LineHeight = 1.1})
 
-local ExecBox = New("Frame", {Parent = Body, LayoutOrder = 3, BackgroundColor3 = Theme.Section, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y}, {
-    Corner(6), Stroke(Limited and Theme.Warn or Theme.Good, 1),
-    New("UIPadding", {PaddingTop = UDim.new(0, 10), PaddingBottom = UDim.new(0, 10), PaddingLeft = UDim.new(0, 12), PaddingRight = UDim.new(0, 12)}),
+local Agreed = false
+local AgreeRow = New("TextButton", {Parent = Body, LayoutOrder = 3, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 20), Text = "", AutoButtonColor = false}, {
+    New("UIListLayout", {FillDirection = Enum.FillDirection.Horizontal, VerticalAlignment = Enum.VerticalAlignment.Center, Padding = UDim.new(0, 8)}),
 })
-New("TextLabel", {Parent = ExecBox, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y,
-    FontFace = F(Enum.FontWeight.Regular), RichText = true, TextColor3 = Theme.Text, TextSize = 13,
-    TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, LineHeight = 1.1,
-    Text = Limited
-        and ("<b><font color=\"#FFB048\">executor: " .. ExecName .. " (limited)</font></b>\nur executor cant do everything this script needs. it still works, but auto green wont let go for u (hold shoot urself) and some features are weaker. use a better executor for the full script.")
-        or ("<b><font color=\"#5AD28C\">executor: " .. ExecName .. " (supported)</font></b>\neverything in the script works on ur executor.")})
+local Box = New("Frame", {Parent = AgreeRow, LayoutOrder = 1, BackgroundColor3 = Theme.Section, BorderSizePixel = 0, Size = UDim2.fromOffset(18, 18)}, {Corner(4)})
+local BoxStroke = Stroke(Theme.Inline, 1)
+BoxStroke.Parent = Box
+local Tick = New("TextLabel", {Parent = Box, BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), FontFace = F(Enum.FontWeight.Bold),
+    Text = "âœ“", TextColor3 = Theme.Background, TextSize = 14, TextTransparency = 1})
+New("TextLabel", {Parent = AgreeRow, LayoutOrder = 2, BackgroundTransparency = 1, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.new(0, 0, 1, 0),
+    FontFace = F(Enum.FontWeight.Medium), Text = Popup.Agree, TextColor3 = Theme.Text, TextSize = 14})
 
-local Btn = New("TextButton", {Parent = Body, LayoutOrder = 4, BackgroundColor3 = Theme.Accent, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 32),
-    FontFace = F(Enum.FontWeight.SemiBold), Text = Popup.Button, TextColor3 = Theme.Background, TextSize = 14, AutoButtonColor = false}, {Corner(6)})
+local ButtonRow = New("Frame", {Parent = Body, LayoutOrder = 4, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 32)})
+
+local CheckBtn = New("TextButton", {Parent = ButtonRow, BackgroundColor3 = Theme.Section, BorderSizePixel = 0, Size = UDim2.new(0.5, -4, 1, 0),
+    FontFace = F(Enum.FontWeight.SemiBold), Text = "check executor", TextColor3 = Theme.Text, TextSize = 14, AutoButtonColor = false}, {Corner(6), Stroke(Theme.Inline, 1)})
+
+local Btn = New("TextButton", {Parent = ButtonRow, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, 0, 0, 0), BackgroundColor3 = Theme.Section, BorderSizePixel = 0, Size = UDim2.new(0.5, -4, 1, 0),
+    FontFace = F(Enum.FontWeight.SemiBold), Text = Popup.Button, TextColor3 = Theme.Dim, TextSize = 14, AutoButtonColor = false}, {Corner(6)})
 
 local function Tween(Obj, Time, Props)
     local T = TweenService:Create(Obj, TweenInfo.new(Time, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), Props)
@@ -125,8 +122,17 @@ local function Tween(Obj, Time, Props)
     return T
 end
 
-Btn.MouseEnter:Connect(function() Tween(Btn, 0.15, {BackgroundColor3 = Theme.Accent:Lerp(Color3.new(1, 1, 1), 0.15)}) end)
-Btn.MouseLeave:Connect(function() Tween(Btn, 0.15, {BackgroundColor3 = Theme.Accent}) end)
+local function SetAgreed(Value)
+    Agreed = Value
+    Tween(Box, 0.15, {BackgroundColor3 = Value and Theme.Accent or Theme.Section})
+    Tween(BoxStroke, 0.15, {Color = Value and Theme.Accent or Theme.Inline})
+    Tween(Tick, 0.15, {TextTransparency = Value and 0 or 1})
+    Tween(Btn, 0.2, {BackgroundColor3 = Value and Theme.Accent or Theme.Section, TextColor3 = Value and Theme.Background or Theme.Dim})
+end
+AgreeRow.MouseButton1Click:Connect(function() SetAgreed(not Agreed) end)
+
+Btn.MouseEnter:Connect(function() if Agreed then Tween(Btn, 0.15, {BackgroundColor3 = Theme.Accent:Lerp(Color3.new(1, 1, 1), 0.15)}) end end)
+Btn.MouseLeave:Connect(function() if Agreed then Tween(Btn, 0.15, {BackgroundColor3 = Theme.Accent}) end end)
 Close.MouseEnter:Connect(function() Tween(Close, 0.15, {TextColor3 = Theme.Text}) end)
 Close.MouseLeave:Connect(function() Tween(Close, 0.15, {TextColor3 = Theme.Dim}) end)
 
@@ -150,6 +156,121 @@ do
     end)
 end
 
+local Results = New("Frame", {Parent = Body, LayoutOrder = 5, Visible = false, BackgroundColor3 = Theme.Section, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y}, {
+    Corner(6), Stroke(Theme.Inline, 1),
+    New("UIPadding", {PaddingTop = UDim.new(0, 10), PaddingBottom = UDim.new(0, 10), PaddingLeft = UDim.new(0, 12), PaddingRight = UDim.new(0, 12)}),
+    New("UIListLayout", {Padding = UDim.new(0, 5), SortOrder = Enum.SortOrder.LayoutOrder}),
+})
+
+local Good, Warn, Bad = Color3.fromRGB(64, 214, 120), Color3.fromRGB(240, 180, 50), Color3.fromRGB(236, 72, 84)
+
+local function Has(Path)
+    local Ok, Value = pcall(function()
+        local Cur = getfenv(0)
+        for Part in string.gmatch(Path, "[^%.]+") do Cur = Cur[Part] end
+        return Cur
+    end)
+    return Ok and type(Value) == "function"
+end
+
+local function AnyOf(...)
+    for _, Name in ipairs({...}) do
+        if Has(Name) then return true end
+    end
+    return false
+end
+
+local function CanRequire()
+    local Module
+    for _, D in ipairs(game:GetService("ReplicatedStorage"):GetDescendants()) do
+        if D:IsA("ModuleScript") then Module = D break end
+    end
+    if not Module then return false end
+    return (pcall(require, Module))
+end
+
+local Checks = {
+    {Name = "Load the script", Required = true, Test = function() return Has("loadstring") end},
+    {Name = "Script globals", Required = true, Test = function() return Has("getgenv") end},
+    {Name = "Auto farms, buying, cash, dupes", Weight = 3, Test = function() return Has("fireproximityprompt") end},
+    {Name = "Gun mods", Weight = 3, Test = CanRequire},
+    {Name = "Infinite ammo (fast mode)", Weight = 2, Soft = "uses the backup mode", Test = function() return Has("getsenv") and Has("debug.getupvalue") and Has("debug.setupvalue") end},
+    {Name = "Chat, script users, Discord", Weight = 2, Test = function() return AnyOf("request", "http_request", "syn.request", "http.request") end},
+    {Name = "Saving configs", Weight = 2, Test = function() return Has("writefile") and Has("readfile") and Has("isfile") and Has("makefolder") end},
+    {Name = "ESP", Weight = 1, Soft = "uses the backup drawing", Test = function() return Has("Drawing.new") end},
+    {Name = "Game & banner images", Weight = 1, Test = function() return AnyOf("getcustomasset", "getsynasset") end},
+    {Name = "Copy buttons", Weight = 1, Test = function() return AnyOf("setclipboard", "toclipboard") end},
+}
+
+local function Row(Order, Color, Left, Right)
+    local R = New("Frame", {Parent = Results, LayoutOrder = Order, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 16)})
+    New("Frame", {Parent = R, AnchorPoint = Vector2.new(0, 0.5), Position = UDim2.new(0, 0, 0.5, 0), Size = UDim2.fromOffset(6, 6), BackgroundColor3 = Color, BorderSizePixel = 0}, {Corner(3)})
+    New("TextLabel", {Parent = R, BackgroundTransparency = 1, Position = UDim2.fromOffset(12, 0), Size = UDim2.new(0.6, -12, 1, 0), FontFace = F(Enum.FontWeight.Medium),
+        Text = Left, TextColor3 = Theme.Text, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd})
+    New("TextLabel", {Parent = R, BackgroundTransparency = 1, AnchorPoint = Vector2.new(1, 0), Position = UDim2.new(1, 0, 0, 0), Size = UDim2.new(0.4, 0, 1, 0), FontFace = F(Enum.FontWeight.Regular),
+        Text = Right, TextColor3 = Color, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Right, TextTruncate = Enum.TextTruncate.AtEnd})
+end
+
+local function RunCheck()
+    for _, C in ipairs(Results:GetChildren()) do
+        if C:IsA("Frame") or C:IsA("TextLabel") then C:Destroy() end
+    end
+
+    local Executor = "Unknown executor"
+    pcall(function()
+        local Name, Version = (identifyexecutor or getexecutorname)()
+        Executor = tostring(Name) .. (Version and (" " .. tostring(Version)) or "")
+    end)
+    local UIS = game:GetService("UserInputService")
+    local Mobile = UIS.TouchEnabled and not UIS.KeyboardEnabled
+
+    local Total, Got, Broken = 0, 0, false
+    local Lines = {}
+    for I, Check in ipairs(Checks) do
+        local Ok = false
+        pcall(function() Ok = Check.Test() and true or false end)
+        if Check.Required then
+            if not Ok then Broken = true end
+        else
+            Total += Check.Weight
+            if Ok or Check.Soft then Got += Ok and Check.Weight or Check.Weight * 0.75 end
+        end
+        local Color = Ok and Good or (Check.Soft and Warn) or Bad
+        local Text = Ok and "works" or (Check.Soft or (Check.Required and "missing, can't run" or "won't work"))
+        table.insert(Lines, {Color, Check.Name, Text})
+    end
+
+    local Percent = Broken and 0 or math.floor(Got / Total * 100 + 0.5)
+    local Verdict, VColor
+    if Broken then Verdict, VColor = "Not supported", Bad
+    elseif Percent >= 90 then Verdict, VColor = "Fully supported", Good
+    elseif Percent >= 60 then Verdict, VColor = "Mostly supported", Warn
+    else Verdict, VColor = "Limited support", Bad end
+
+    New("TextLabel", {Parent = Results, LayoutOrder = 0, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 18), FontFace = F(Enum.FontWeight.Bold),
+        Text = Executor .. (Mobile and " (mobile)" or ""), TextColor3 = Theme.Text, TextSize = 15, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd})
+    New("TextLabel", {Parent = Results, LayoutOrder = 1, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 16), FontFace = F(Enum.FontWeight.SemiBold),
+        Text = Verdict .. "  â€¢  " .. Percent .. "% compatible", TextColor3 = VColor, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left})
+    if Mobile then
+        New("TextLabel", {Parent = Results, LayoutOrder = 2, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, FontFace = F(Enum.FontWeight.Regular),
+            Text = "On mobile, loading can take up to 2 minutes.", TextColor3 = Theme.Dim, TextSize = 12, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left})
+    end
+    New("Frame", {Parent = Results, LayoutOrder = 3, BackgroundColor3 = Theme.Inline, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 1)})
+    for I, L in ipairs(Lines) do
+        Row(10 + I, L[1], L[2], L[3])
+    end
+
+    Results.Visible = true
+    CheckBtn.Text = "check again"
+end
+
+CheckBtn.MouseEnter:Connect(function() Tween(CheckBtn, 0.15, {BackgroundColor3 = Theme.Inline}) end)
+CheckBtn.MouseLeave:Connect(function() Tween(CheckBtn, 0.15, {BackgroundColor3 = Theme.Section}) end)
+CheckBtn.MouseButton1Click:Connect(function()
+    CheckBtn.Text = "checking..."
+    task.defer(RunCheck)
+end)
+
 local Closing = false
 local function Dismiss()
     Tween(Dim, 0.2, {BackgroundTransparency = 1})
@@ -159,14 +280,19 @@ end
 
 Btn.MouseButton1Click:Connect(function()
     if Closing then return end
+    if not Agreed then
+        Tween(BoxStroke, 0.1, {Color = Color3.fromRGB(236, 72, 84)})
+        task.delay(0.6, function() if not Agreed then Tween(BoxStroke, 0.2, {Color = Theme.Inline}) end end)
+        return
+    end
     Closing = true
     Btn.Text = "loading..."
     task.spawn(Dismiss)
     task.spawn(function()
         local Ok, Err = pcall(function()
-            loadstring(game:HttpGet("https://nazuro.lol/practical"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/cmasseyxmfohra-gif/scripts/refs/heads/main/beta"))()
         end)
-        if not Ok then warn("[practical basketball] failed to load:", Err) end
+        if not Ok then warn("[tha bronx] failed to load:", Err) end
     end)
 end)
 
