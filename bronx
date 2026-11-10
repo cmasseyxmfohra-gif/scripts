@@ -82,7 +82,7 @@ New("TextLabel", {Parent = TitleRow, BackgroundColor3 = Theme.SecondAccent, Back
     Corner(4), New("UIPadding", {PaddingLeft = UDim.new(0, 6), PaddingRight = UDim.new(0, 6)}),
 })
 local Close = New("TextButton", {Parent = Header, AnchorPoint = Vector2.new(1, 0.5), Position = UDim2.new(1, 0, 0.5, 0), Size = UDim2.fromOffset(22, 22),
-    BackgroundTransparency = 1, FontFace = F(Enum.FontWeight.Medium), Text = "Ã—", TextColor3 = Theme.Dim, TextSize = 22, AutoButtonColor = false})
+    BackgroundTransparency = 1, FontFace = F(Enum.FontWeight.Medium), Text = "\u{00D7}", TextColor3 = Theme.Dim, TextSize = 22, AutoButtonColor = false})
 
 local MsgBox = New("Frame", {Parent = Body, LayoutOrder = 2, BackgroundColor3 = Theme.Section, BorderSizePixel = 0, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y}, {
     Corner(6), Stroke(Theme.Inline, 1),
@@ -104,7 +104,7 @@ local Box = New("Frame", {Parent = AgreeRow, LayoutOrder = 1, BackgroundColor3 =
 local BoxStroke = Stroke(Theme.Inline, 1)
 BoxStroke.Parent = Box
 local Tick = New("TextLabel", {Parent = Box, BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), FontFace = F(Enum.FontWeight.Bold),
-    Text = "âœ“", TextColor3 = Theme.Background, TextSize = 14, TextTransparency = 1})
+    Text = "\u{2713}", TextColor3 = Theme.Background, TextSize = 14, TextTransparency = 1})
 New("TextLabel", {Parent = AgreeRow, LayoutOrder = 2, BackgroundTransparency = 1, AutomaticSize = Enum.AutomaticSize.X, Size = UDim2.new(0, 0, 1, 0),
     FontFace = F(Enum.FontWeight.Medium), Text = Popup.Agree, TextColor3 = Theme.Text, TextSize = 14})
 
@@ -250,7 +250,7 @@ local function RunCheck()
     New("TextLabel", {Parent = Results, LayoutOrder = 0, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 18), FontFace = F(Enum.FontWeight.Bold),
         Text = Executor .. (Mobile and " (mobile)" or ""), TextColor3 = Theme.Text, TextSize = 15, TextXAlignment = Enum.TextXAlignment.Left, TextTruncate = Enum.TextTruncate.AtEnd})
     New("TextLabel", {Parent = Results, LayoutOrder = 1, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 16), FontFace = F(Enum.FontWeight.SemiBold),
-        Text = Verdict .. "  â€¢  " .. Percent .. "% compatible", TextColor3 = VColor, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left})
+        Text = Verdict .. "  \u{2022}  " .. Percent .. "% compatible", TextColor3 = VColor, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left})
     if Mobile then
         New("TextLabel", {Parent = Results, LayoutOrder = 2, BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 0), AutomaticSize = Enum.AutomaticSize.Y, FontFace = F(Enum.FontWeight.Regular),
             Text = "On mobile, loading can take up to 2 minutes.", TextColor3 = Theme.Dim, TextSize = 12, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left})
